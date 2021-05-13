@@ -1,0 +1,101 @@
+<!DOCTYPE>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://bootstraptema.ru/plugins/2015/bootstrap3/bootstrap.min.css" />
+    <script type="text/javascript" src="https://bootstraptema.ru/plugins/jquery/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="https://bootstraptema.ru/plugins/2015/b-v3-3-6/bootstrap.min.js"></script>
+    <script src="https://bootstraptema.ru/_sf/3/334.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<style>
+.table-fixed thead {
+ width: 97%;
+}
+.table-fixed tbody {
+ height: 230px;
+ overflow-y: auto;
+ width: 100%;
+}
+.table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+ display: block;
+}
+.table-fixed tbody td, .table-fixed thead > tr> th {
+ float: left;
+ border-bottom-width: 0;
+}
+</style>
+
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/">FakeCSV</a>
+  <div class="container-fluid">
+    <a class="nav-link" href="/schemas">
+          Schemas
+        </a>
+  </div>
+    <div class="container-fluid">
+    <a class="nav-link" href="/datasets">
+          Datasets
+        </a>
+  </div>
+ {% if request.user.is_authenticated %}
+      <li class="nav-item">
+       <p>Hello, <a>{{request.user}}</a></p>
+      </li>
+ <a class="nav-link" href="#" id="logout"> Logout </a>
+         <script>
+         let logout = document.getElementById('logout');
+         logout.addEventListener('click', function(){
+                    const url = "http://127.0.0.1:8000/auth/logout/";
+                    fetch(url, {
+                            method: "GET",
+                            headers:{
+                                'Content-Type': 'application/json'
+                            }
+                    })
+                    .then((response) =>{
+                        location.reload();
+                    });
+         })
+        </script>
+        {% endif %}
+</nav>
+<div class="container">
+ <div class="row">
+ <div class="panel panel-default">
+ <div class="panel-heading">
+ <h3>
+ Schemas
+ </h3>
+     <input type="number" id="samplesQty" min="1" placeholder="Enter number of samples to generate">
+     <button type="button" class="btn btn-success" id="send">Generate</button>
+ </div>
+ <table class="table">
+     <thead>
+         <tr>
+             <th class="col-xs-2">#</th>
+             <th class="col-xs-4">Created</th>
+             <th class="col-xs-2">Status</th>
+             <th class="col-xs-4">Actions</th>
+         </tr>
+     </thead>
+     <tbody>
+         <tr>
+             <td class="col-xs-2">1</td>
+             <td class="col-xs-4">10.05.2021</td>
+             <td class="col-xs-2">SUCCESS</td>
+             <td class="col-xs-4">DOWNLOAD</td>
+         </tr>
+     </tbody>
+ </table>
+ </div>
+ </div>
+</div>
+
+</body>
+</html>

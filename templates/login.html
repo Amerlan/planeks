@@ -180,9 +180,15 @@
                     })
                 })
                 .then((response) => {
-                    window.location.replace("http://127.0.0.1:8000/schemas");
+                        if (response.ok) {
+                            window.location.replace("http://127.0.0.1:8000/schemas");
+                        }
+                        else{
+                            alert("Wrong username or password");
+                        }
                     }
-                );
+                )
+
     })
 
 </script>

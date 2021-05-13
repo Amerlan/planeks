@@ -15,5 +15,15 @@ def login(request):
 
 def schemas(request):
     if request.user.is_authenticated:
-        return render(request, 'table.html')
+        return render(request, 'schemas.html')
     return redirect('/login')
+
+
+def datasets(request):
+    if request.user.is_authenticated:
+        return render(request, 'datasets.html')
+    return redirect('/login')
+
+
+def home(request):
+    return redirect('/schemas')
