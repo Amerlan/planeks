@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import CreateSchemaApiView
+from .views import SchemaCreateApiView
 
 urlpatterns = [
-    path('create-schema/', CreateSchemaApiView.as_view()),
+    path('create-schema/', SchemaCreateApiView.as_view()),
 ]

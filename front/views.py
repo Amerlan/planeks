@@ -10,6 +10,8 @@ def create_schema(request):
 
 
 def login(request):
+    if request.user.is_authenticated:
+        return redirect('/schemas')
     return render(request, 'login.html')
 
 

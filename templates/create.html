@@ -189,22 +189,6 @@
          });
     add_btn.click();
     const url = "http://127.0.0.1:8000/generator/create-schema/";
-    console.log(element.getElementsByTagName('csrfmiddlewaretoken'));
-    function getCookie(name) {
-          if (!document.cookie) {
-            return null;
-          }
-
-          const xsrfCookies = document.cookie.split(';')
-            .map(c => c.trim())
-            .filter(c => c.startsWith(name + '='));
-
-          if (xsrfCookies.length === 0) {
-            return null;
-          }
-          return decodeURIComponent(xsrfCookies[0].split('=')[1]);
-    }
-    const csrftoken = getCookie('CSRF-TOKEN');
     send_btn.addEventListener('click', function(){
         let data = [];
         for (let i=1; i < counter; i++){
@@ -214,25 +198,41 @@
             let upper_bound = $("#upper"+i)[0].value;
             let sentence_count = $("#sentenceCount"+i)[0].value;
             let order = {
-                            "column_name": column_name,
-                            "column_type": column_type,
+                            "name": column_name,
+                            "field_type": column_type,
                             "lower_bound": lower_bound,
                             "upper_bound": upper_bound,
                             "sentence_count": sentence_count
                         };
             data.push(order);
         }
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
         let body = {
-                        "schema_name": schemaName.value,
-                        "column_separator": columnSeparator.value,
+                        "name": schemaName.value,
+                        "separator": columnSeparator.value,
                         "string_character": stringCharacter.value,
                         "data": data
                     }
         fetch(url, {
                     method: "POST",
+                    credentials: 'same-origin',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrftoken
+                        "X-CSRFToken": getCookie("csrftoken")
                     },
                     body: JSON.stringify(body)
         })
