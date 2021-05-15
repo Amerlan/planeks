@@ -6,6 +6,9 @@ class Schema(models.Model):
     separator = models.CharField('Field data separator sign', max_length=1)
     string_character = models.CharField('String character', max_length=1)
 
+    def __str__(self):
+        return self.name
+
 
 class Column(models.Model):
     name = models.CharField('Column name', max_length=25)
@@ -15,4 +18,5 @@ class Column(models.Model):
     upper_bound = models.PositiveIntegerField('Upper bound of random value', null=True)
     sentence_count = models.PositiveIntegerField('Amount of sentences', null=True)
 
-
+    def __str__(self):
+        return f"{self.name} {self.schema.name}"

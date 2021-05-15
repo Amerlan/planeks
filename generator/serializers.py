@@ -5,11 +5,16 @@ from rest_framework import serializers
 class SchemaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Schema
-        fields = '__all__'
+        fields = (
+            'id', 'name', 'separator', 'string_character'
+        )
 
 
 class ColumnSerializer(serializers.ModelSerializer):
     class Meta:
         model = Column
-        fields = '__all__'
+        fields = (
+            'name', 'schema', 'field_type',
+            'lower_bound', 'upper_bound', 'sentence_count'
+        )
 
