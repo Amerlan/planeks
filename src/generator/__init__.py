@@ -5,11 +5,11 @@ from random import randrange
 fake = Faker()
 
 
-def sentence(*, qty: int, string_char: str):
+def sentence(*, qty: int, string_char: str, separator: str):
     text = f'{string_char}'
     for x in range(qty):
         text += fake.sentence() + ' '
-    text += f'{string_char}'
+    text += f'{string_char}'.replace(f'{separator}', '')
     return text
 
 

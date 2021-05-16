@@ -27,11 +27,11 @@ def generate_csv(qty: int, schema: Schema, dataset):
                     sentence_count = column.sentence_count
                     generator = column_types[field_type]
                     if field_type == 7:
-                        row += f'{generator(qty=sentence_count, string_char=string_char)}'
+                        row += f'{generator(qty=sentence_count, string_char=string_char, separator=separator)}'
                     elif field_type == 8:
                         row += f'{generator(lower=lower, upper=upper)}'
                     else:
-                        row += generator()
+                        row += generator().replace(separator, '')
                     row += separator
                 file.write(row+'\n')
         dataset = Dataset.objects.get(id=dataset['id'])
