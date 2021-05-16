@@ -126,12 +126,12 @@
                     th.appendChild(content);
                     tr.appendChild(th);
                 }
-            let edit_btn = document.createElement('a');
-            var content = document.createTextNode('Edit');
-            edit_btn.appendChild(content);
-            var content = document.createTextNode(' ');
-            edit_btn.appendChild(content);
-            edit_btn.setAttribute('href', '/edit/' + data[i]['id'] + '/');
+<!--            let edit_btn = document.createElement('a');-->
+<!--            var content = document.createTextNode('Edit');-->
+<!--            edit_btn.appendChild(content);-->
+<!--            var content = document.createTextNode(' ');-->
+<!--            edit_btn.appendChild(content);-->
+<!--            edit_btn.setAttribute('href', '/edit/' + data[i]['id'] + '/');-->
             let action_btn = document.createElement('a');
             var content = document.createTextNode('Delete');
             action_btn.appendChild(content);
@@ -151,7 +151,7 @@
                         }
                 });
             });
-            tr.appendChild(edit_btn);
+<!--            tr.appendChild(edit_btn);-->
             tr.appendChild(action_btn);
             table.appendChild(tr);
             };

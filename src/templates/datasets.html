@@ -165,6 +165,11 @@
                             link.setAttribute('hidden', 'true');
                             link.setAttribute('download', '');
                         }
+                        else if (data[i]['status'] === 'FAILURE'){
+                            var content = document.createTextNode('');
+                            download_btn.setAttribute('class', 'btn btn-danger');
+                            download_btn.setAttribute('type', 'button');
+                        }
                         else{
                             var content = document.createTextNode('');
                             download_btn.setAttribute('class', 'btn btn-secondary');

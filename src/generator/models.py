@@ -24,8 +24,8 @@ class Column(TimeStampModel):
 
 
 class Dataset(TimeStampModel):
-    schema = models.ForeignKey('generator.Schema', verbose_name='Schema', on_delete=models.DO_NOTHING)
-    status = models.CharField('Dataset status', default='Pending', max_length=15)
+    schema = models.ForeignKey('generator.Schema', verbose_name='Schema', on_delete=models.CASCADE)
+    status = models.CharField('Dataset status', default='PENDING', max_length=15)
     download_url = models.CharField('Dataset download url', default='', max_length=255)
 
     def __str__(self):
