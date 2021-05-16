@@ -1,7 +1,7 @@
 <!DOCTYPE>
 <html>
 <head>
-    <title>Login</title>
+    <title>Datasets</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://bootstraptema.ru/plugins/2015/bootstrap3/bootstrap.min.css" />
     <script type="text/javascript" src="https://bootstraptema.ru/plugins/jquery/jquery-1.11.3.min.js"></script>
@@ -51,7 +51,7 @@
          <script>
          let logout = document.getElementById('logout');
          logout.addEventListener('click', function(){
-                    const url = "http://127.0.0.1:8000/auth/logout/";
+                    const url = "/auth/logout/";
                     fetch(url, {
                             method: "GET",
                             headers:{
@@ -70,7 +70,7 @@
  <div class="panel panel-default">
  <div class="panel-heading">
  <h3>
- Schemas
+ Datasets
  </h3>
      <input type="number" id="samplesQty" min="1" placeholder="Enter number of samples to generate">
      <button type="button" class="btn btn-success" id="send">Generate</button>
@@ -98,4 +98,36 @@
 </div>
 
 </body>
+<script>
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    let send_btn = document.getElementById('send');
+    send_btn.addEventListener('click', function(){
+        let samplesQty = document.getElementById('samplesQty').value;
+        const url = '/generator/run/'
+        fetch(url, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    "X-CSRFToken": getCookie("csrftoken")
+                },
+                body: JSON.stringify({
+                     'qty': samplesQty
+                })
+            }
+        )
+    });
+</script>
 </html>

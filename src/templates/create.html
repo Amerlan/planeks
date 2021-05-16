@@ -30,7 +30,7 @@
          <script>
          let logout = document.getElementById('logout');
          logout.addEventListener('click', function(){
-                    const url = "http://127.0.0.1:8000/auth/logout/";
+                    const url = "/auth/logout/";
                     fetch(url, {
                             method: "GET",
                             headers:{
@@ -45,7 +45,6 @@
         {% endif %}
 </nav>
 
-{% csrf_token %}
 <div class="container">
 <div class="row">
 
@@ -94,8 +93,7 @@
              <label class="input-group-text" for="typeSelector">Type</label>
         </div>
         <select class="custom-select" name="field_type" id="typeSelector">
-            <option selected>...</option>
-            <option value="1">Full name</option>
+            <option value="1" selected>Full name</option>
             <option value="2">Job</option>
             <option value="3">Email</option>
             <option value="4">Domain name</option>
@@ -188,7 +186,7 @@
             counter ++;
          });
     add_btn.click();
-    const url = "http://127.0.0.1:8000/generator/create-schema/";
+    const url = "/generator/create-schema/";
     send_btn.addEventListener('click', function(){
         let data = [];
         for (let i=1; i < counter; i++){
@@ -212,7 +210,6 @@
                 var cookies = document.cookie.split(';');
                 for (var i = 0; i < cookies.length; i++) {
                     var cookie = jQuery.trim(cookies[i]);
-                    // Does this cookie string begin with the name we want?
                     if (cookie.substring(0, name.length + 1) === (name + '=')) {
                         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                         break;
@@ -237,7 +234,13 @@
                     body: JSON.stringify(body)
         })
         .then((response) =>{
-                console.log(response);
+                if (response.ok) {
+                    location.reload();
+                    alert("Schema created");
+                }
+                else{
+                    alert("Schema already exists or fields are empty");
+                }
         });
     });
 

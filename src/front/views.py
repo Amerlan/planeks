@@ -29,3 +29,9 @@ def datasets(request):
 
 def home(request):
     return redirect('/schemas')
+
+
+def edit(request, schema_id):
+    if request.user.is_authenticated:
+        return render(request, 'edit.html', context={'schema_id': schema_id})
+    return redirect('/login')

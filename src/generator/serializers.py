@@ -2,7 +2,7 @@ from .models import Schema, Column
 from rest_framework import serializers
 
 
-class SchemaSerializer(serializers.ModelSerializer):
+class SchemaCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Schema
         fields = (
@@ -18,3 +18,10 @@ class ColumnSerializer(serializers.ModelSerializer):
             'lower_bound', 'upper_bound', 'sentence_count'
         )
 
+
+class SchemaListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Schema
+        fields = (
+            'id', 'name', 'pretty_update_at',
+        )

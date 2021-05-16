@@ -1,7 +1,8 @@
 from django.db import models
+from common.models import TimeStampModel
 
 
-class Schema(models.Model):
+class Schema(TimeStampModel):
     name = models.CharField('Schema name', unique=True, max_length=25)
     separator = models.CharField('Field data separator sign', max_length=1)
     string_character = models.CharField('String character', max_length=1)
@@ -10,7 +11,7 @@ class Schema(models.Model):
         return self.name
 
 
-class Column(models.Model):
+class Column(TimeStampModel):
     name = models.CharField('Column name', max_length=25)
     schema = models.ForeignKey('generator.Schema', verbose_name='Schema', on_delete=models.CASCADE)
     field_type = models.PositiveIntegerField('Field data type')
@@ -20,3 +21,9 @@ class Column(models.Model):
 
     def __str__(self):
         return f"{self.name} {self.schema.name}"
+
+
+class Dataset(TimeStampModel):
+    schema = models.ForeignKey('generator.Schema', verbose_name='Schema', on_delete=models.DO_NOTHING)
+    status = models.BooleanField('Dataset status', default=False)
+    download_url = models.CharField('Dataset download url', default='', max_length=255)
