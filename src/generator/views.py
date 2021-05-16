@@ -3,7 +3,13 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.response import Response
 from .models import Schema, Dataset
-from .serializers import SchemaCreateSerializer, SchemaListSerializer, DatasetListSerializer, DatasetCreateSerializer
+from .serializers import (
+    SchemaCreateSerializer,
+    SchemaListSerializer,
+    DatasetListSerializer,
+    DatasetCreateSerializer,
+    SchemaDetailSerializer,
+)
 from .services import create_columns
 from .tasks import generate_csv
 import mimetypes
@@ -45,20 +51,23 @@ class DatasetGenerateApiView(APIView):
     permission_classes = (IsAuthenticated, )
 
     def post(self, request):
+        Dataset.objects.all().delete()
         data = request.data
         qty = int(data['qty']) if data['qty'] else 0
         schemas = Schema.objects.all()
         for schema in schemas:
-            filename = f"{schema['name']}.csv"
+            filename = f"{schema.name}.csv"
             dataset_data = {
-                'schema': schema['id'],
+                'schema': schema.id,
                 'download_url': filename
             }
             serializer = DatasetCreateSerializer(data=dataset_data)
             serializer.is_valid(raise_exception=True)
             dataset = serializer.save()
-            schema_serializer = SchemaListSerializer(schema)
-            generate_csv.apply_async((int(qty), schema_serializer.data, dataset), countdown=5)
+            dataset = DatasetListSerializer(dataset)
+            schema_serializer = SchemaDetailSerializer(schema)
+            print(schema_serializer.data)
+            generate_csv.apply_async((int(qty), schema_serializer.data, dataset.data), countdown=5)
         return Response(status=status.HTTP_201_CREATED)
 
 

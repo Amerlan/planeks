@@ -125,12 +125,20 @@
                 body: JSON.stringify({
                      'qty': samplesQty
                 })
+        })
+        .then((response) =>{
+            if (response.ok){
+                 location.reload();
             }
-        )
-    });
+            else{
+                alert(response.text);
+            }
+        });
+    })
+    ;
 
-    const url = '/generator/datasets/';
-    fetch(url, {
+    const dataset_url = '/generator/datasets/';
+    fetch(dataset_url, {
         method: "GET",
         headers: {
                 'Content-Type': 'application/json'
@@ -150,15 +158,18 @@
                     }
                     else {
                         let th = document.createElement('th');
-                        let download_btn = document.createElement('a');
+                        let download_btn = document.createElement('button');
                         if (data[i]['status'] === 'SUCCESS'){
                             var content = document.createTextNode('Download');
+                            download_btn.setAttribute('class', 'btn btn-success');
+                            download_btn.setAttribute('type', 'button');
                         }
                         else{
                             var content = document.createTextNode('');
+                            download_btn.setAttribute('class', 'btn btn-secondary');
+                            download_btn.setAttribute('type', 'button');
                         }
                         download_btn.appendChild(content);
-                        download_btn.setAttribute('href', '#');
                         download_btn.addEventListener('click', function(){
                             const rm_url = '/generator/download/' + value + '/';
                             fetch(rm_url, {
@@ -172,6 +183,7 @@
                         tr.appendChild(th);
                     }
                 }
+                table.appendChild(tr);
             };
     })
 </script>

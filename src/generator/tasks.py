@@ -33,4 +33,7 @@ def generate_csv(qty: int, schema: Schema, dataset):
                     row += generator()
                 row += separator
             file.write(row+'\n')
-    Dataset.objects.get(id=dataset.id).update(status="SUCCESS")
+    dataset = Dataset.objects.get(id=dataset['id'])
+    dataset.status = "SUCCESS"
+    dataset.save()
+    return os.path.join(settings.MEDIA_ROOT, filename)

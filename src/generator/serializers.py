@@ -41,3 +41,11 @@ class DatasetListSerializer(serializers.ModelSerializer):
         fields = (
             'id', 'pretty_created_at', 'status', 'download_url'
         )
+
+
+class SchemaDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Schema
+        fields = (
+            'id', 'name', 'separator', 'string_character',
+        )

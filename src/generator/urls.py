@@ -13,6 +13,6 @@ urlpatterns = [
     path('schemas/', SchemaListApiView.as_view()),
     path('delete/<str:schema_id>/', SchemaDeleteApiView.as_view()),
     path('run/', DatasetGenerateApiView.as_view()),
-    path('download/<str:schema_id>/', DatasetDownloadApiView.as_view()),
+    path('download/<str:filename>/', DatasetDownloadApiView.as_view()),
     path('datasets/', DatasetListApiView.as_view()),
 ]
