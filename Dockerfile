@@ -1,5 +1,6 @@
 FROM python:3.7-alpine
 
+ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 COPY ./src /src
 COPY requirements.txt /src/requirements.txt

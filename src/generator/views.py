@@ -65,7 +65,6 @@ class DatasetGenerateApiView(APIView):
             dataset = serializer.save()
             dataset = DatasetListSerializer(dataset)
             schema_serializer = SchemaDetailSerializer(schema)
-            print(schema_serializer.data)
             generate_csv.apply_async((int(qty), schema_serializer.data, dataset.data), countdown=5)
         return Response(status=status.HTTP_201_CREATED)
 
