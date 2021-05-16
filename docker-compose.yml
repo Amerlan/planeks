@@ -22,6 +22,7 @@ services:
     command: >
       sh -c "python3 manage.py wait_for_db &&
              python3 manage.py migrate &&
+             python3 manage.py admin_create &&
              python3 manage.py runserver 0.0.0.0:8000"
     depends_on:
       - postgres
@@ -30,6 +31,8 @@ services:
     restart: always
     build:
       context: .
+    volumes:
+      - ./src:/src:rw
     command: celery -A core worker -l info
     depends_on:
       - postgres

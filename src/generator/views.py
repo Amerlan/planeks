@@ -51,7 +51,6 @@ class DatasetGenerateApiView(APIView):
     permission_classes = (IsAuthenticated, )
 
     def post(self, request):
-        Dataset.objects.all().delete()
         data = request.data
         qty = int(data['qty']) if data['qty'] else 0
         schemas = Schema.objects.all()

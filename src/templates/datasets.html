@@ -77,7 +77,6 @@
      <button type="button" class="btn btn-success" id="send">Generate</button>
  </div>
  <table class="table">
-     <a id="download" href="http://127.0.0.1:8000/generator/download/2/" download>down</a>
      <thead>
          <tr>
              <th class="col-xs-2">#</th>
@@ -87,9 +86,6 @@
          </tr>
      </thead>
      <tbody id="tbody">
-         <tr>
-
-         </tr>
      </tbody>
  </table>
  </div>
@@ -157,12 +153,17 @@
                         tr.appendChild(th);
                     }
                     else {
+                        let link = document.createElement('a');
+                        link.setAttribute('id', data[i]['id']);
                         let th = document.createElement('th');
                         let download_btn = document.createElement('button');
                         if (data[i]['status'] === 'SUCCESS'){
                             var content = document.createTextNode('Download');
                             download_btn.setAttribute('class', 'btn btn-success');
                             download_btn.setAttribute('type', 'button');
+                            link.setAttribute('href', '/generator/download/' + value + '/');
+                            link.setAttribute('hidden', 'true');
+                            link.setAttribute('download', '');
                         }
                         else{
                             var content = document.createTextNode('');
@@ -171,14 +172,9 @@
                         }
                         download_btn.appendChild(content);
                         download_btn.addEventListener('click', function(){
-                            const rm_url = '/generator/download/' + value + '/';
-                            fetch(rm_url, {
-                                method: "GET",
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                }
-                            })
+                            document.getElementById(data[i]['id']).click();
                         });
+                        th.appendChild(link);
                         th.appendChild(download_btn);
                         tr.appendChild(th);
                     }
