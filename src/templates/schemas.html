@@ -1,0 +1,160 @@
+<!DOCTYPE>
+<html>
+<head>
+    <title>Schemas</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://bootstraptema.ru/plugins/2015/bootstrap3/bootstrap.min.css" />
+    <script type="text/javascript" src="https://bootstraptema.ru/plugins/jquery/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="https://bootstraptema.ru/plugins/2015/b-v3-3-6/bootstrap.min.js"></script>
+    <script src="https://bootstraptema.ru/_sf/3/334.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<style>
+.table-fixed thead {
+ width: 97%;
+}
+.table-fixed tbody {
+ height: 230px;
+ overflow-y: auto;
+ width: 100%;
+}
+.table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+ display: block;
+}
+.table-fixed tbody td, .table-fixed thead > tr> th {
+ float: left;
+ border-bottom-width: 0;
+}
+</style>
+
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/">FakeCSV</a>
+  <div class="container-fluid">
+    <a class="nav-link" href="/schemas">
+          Schemas
+        </a>
+  </div>
+    <div class="container-fluid">
+    <a class="nav-link" href="/datasets">
+          Datasets
+        </a>
+  </div>
+ {% if request.user.is_authenticated %}
+      <li class="nav-link">
+       <p>Hello, <a>{{request.user}}</a></p>
+      </li>
+ <a class="nav-link" href="#" id="logout"> Logout </a>
+         <script>
+         let logout = document.getElementById('logout');
+         logout.addEventListener('click', function(){
+                    const url = "/auth/logout/";
+                    fetch(url, {
+                            method: "GET",
+                            headers:{
+                                'Content-Type': 'application/json'
+                            }
+                    })
+                    .then((response) =>{
+                        location.reload();
+                    });
+         })
+        </script>
+        {% endif %}
+</nav>
+<div class="container">
+ <div class="row">
+ <div class="panel panel-default">
+ <div class="panel-heading">
+ <h3>
+ Schemas
+ </h3>
+     <a class="nav-link" href="/create-schema/">
+          Create schema
+        </a>
+ </div>
+ <table class="table">
+     <thead>
+         <tr>
+             <th class="col-xs-2">#</th>
+             <th class="col-xs-4">Title</th>
+             <th class="col-xs-2">Modified</th>
+             <th class="col-xs-4">Actions</th>
+         </tr>
+     </thead>
+     <tbody id="tbody">
+     </tbody>
+ </table>
+ </div>
+ </div>
+</div>
+
+</body>
+<script>
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const url = '/generator/schemas/';
+    fetch(url, {
+        method: "GET",
+        headers: {
+                'Content-Type': 'application/json'
+            }
+    }
+    )
+    .then(response => response.json())
+    .then((data) => {
+            let table = document.getElementById('tbody');
+            for (let i=0; i < data.length; i++){
+                let tr = document.createElement('tr');
+                for (const [key, value] of Object.entries(data[i])){
+                    let th = document.createElement('th');
+                    var content = document.createTextNode(value);
+                    th.appendChild(content);
+                    tr.appendChild(th);
+                }
+            let edit_btn = document.createElement('a');
+            var content = document.createTextNode('Edit');
+            edit_btn.appendChild(content);
+            var content = document.createTextNode(' ');
+            edit_btn.appendChild(content);
+            edit_btn.setAttribute('href', '/edit/' + data[i]['id'] + '/');
+            let action_btn = document.createElement('a');
+            var content = document.createTextNode('Delete');
+            action_btn.appendChild(content);
+            action_btn.setAttribute('href', '#');
+            action_btn.addEventListener('click', function(){
+                const rm_url = '/generator/delete/' + data[i]['id'] + '/';
+                fetch(rm_url, {
+                    method: "DELETE",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "X-CSRFToken": getCookie("csrftoken")
+                    }
+                })
+                .then((response) =>{
+                        if (response.ok) {
+                            location.reload();
+                        }
+                });
+            });
+            tr.appendChild(edit_btn);
+            tr.appendChild(action_btn);
+            table.appendChild(tr);
+            };
+    })
+</script>
+</html>

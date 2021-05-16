@@ -163,7 +163,7 @@
  </div>
 </div>
 <script>
-    const url = "http://127.0.0.1:8000/auth/login/";
+    const url = "/auth/login/";
     let send_btn = document.getElementById("send");
     send_btn.addEventListener('click', function(){
          let username = $("#inputUsername")[0].value;
@@ -180,9 +180,15 @@
                     })
                 })
                 .then((response) => {
-                    window.location.replace("http://127.0.0.1:8000/schemas");
+                        if (response.ok) {
+                            window.location.replace("/schemas/");
+                        }
+                        else{
+                            alert("Wrong username or password");
+                        }
                     }
-                );
+                )
+
     })
 
 </script>
