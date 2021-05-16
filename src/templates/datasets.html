@@ -1,4 +1,5 @@
 <!DOCTYPE>
+{% load static %}
 <html>
 <head>
     <title>Datasets</title>
@@ -76,6 +77,7 @@
      <button type="button" class="btn btn-success" id="send">Generate</button>
  </div>
  <table class="table">
+     <a id="download" href="http://127.0.0.1:8000/generator/download/2/" download>down</a>
      <thead>
          <tr>
              <th class="col-xs-2">#</th>
@@ -84,12 +86,9 @@
              <th class="col-xs-4">Actions</th>
          </tr>
      </thead>
-     <tbody>
+     <tbody id="tbody">
          <tr>
-             <td class="col-xs-2">1</td>
-             <td class="col-xs-4">10.05.2021</td>
-             <td class="col-xs-2">SUCCESS</td>
-             <td class="col-xs-4">DOWNLOAD</td>
+
          </tr>
      </tbody>
  </table>
@@ -129,5 +128,51 @@
             }
         )
     });
+
+    const url = '/generator/datasets/';
+    fetch(url, {
+        method: "GET",
+        headers: {
+                'Content-Type': 'application/json'
+            }
+    })
+    .then(response => response.json())
+    .then((data) => {
+            let table = document.getElementById('tbody');
+            for (let i=0; i < data.length; i++){
+                let tr = document.createElement('tr');
+                for (const [key, value] of Object.entries(data[i])){
+                    if (key !== 'download_url'){
+                        let th = document.createElement('th');
+                        var content = document.createTextNode(value);
+                        th.appendChild(content);
+                        tr.appendChild(th);
+                    }
+                    else {
+                        let th = document.createElement('th');
+                        let download_btn = document.createElement('a');
+                        if (data[i]['status'] === 'SUCCESS'){
+                            var content = document.createTextNode('Download');
+                        }
+                        else{
+                            var content = document.createTextNode('');
+                        }
+                        download_btn.appendChild(content);
+                        download_btn.setAttribute('href', '#');
+                        download_btn.addEventListener('click', function(){
+                            const rm_url = '/generator/download/' + value + '/';
+                            fetch(rm_url, {
+                                method: "GET",
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                }
+                            })
+                        });
+                        th.appendChild(download_btn);
+                        tr.appendChild(th);
+                    }
+                }
+            };
+    })
 </script>
 </html>

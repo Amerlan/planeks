@@ -1,4 +1,4 @@
-from .models import Schema, Column
+from .models import Schema, Column, Dataset
 from rest_framework import serializers
 
 
@@ -23,5 +23,21 @@ class SchemaListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Schema
         fields = (
-            'id', 'name', 'pretty_update_at',
+            'id', 'name', 'pretty_updated_at',
+        )
+
+
+class DatasetCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Dataset
+        fields = (
+            'schema', 'status', 'download_url'
+        )
+
+
+class DatasetListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Dataset
+        fields = (
+            'id', 'pretty_created_at', 'status', 'download_url'
         )

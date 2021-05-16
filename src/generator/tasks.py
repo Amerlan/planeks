@@ -1,14 +1,18 @@
-from celery import shared_task
-from .models import Schema, Column
+from .models import Schema, Column, Dataset
 from . import column_types
+import os
+from django.conf import settings
+from core.celery import app
 
 
-@shared_task
-def generate_csv(qty: int, schema: Schema):
-    with open(f'media/{schema.name}.csv', 'w') as file:
-        columns = Column.objects.filter(schema=schema.id)
-        separator = schema.separator
-        string_char = schema.string_character
+@app.task
+def generate_csv(qty: int, schema: Schema, dataset):
+    filename = f"{schema['name']}.csv"
+    filename_path = os.path.join(settings.MEDIA_ROOT, filename)
+    with open(filename_path, 'w') as file:
+        columns = Column.objects.filter(schema=schema['id'])
+        separator = schema['separator']
+        string_char = schema['string_character']
         header = ''
         for column in columns:
             header += f'{column.name}{separator}'
@@ -28,8 +32,5 @@ def generate_csv(qty: int, schema: Schema):
                 else:
                     row += generator()
                 row += separator
-                print(row)
             file.write(row+'\n')
-
-
-
+    Dataset.objects.get(id=dataset.id).update(status="SUCCESS")

@@ -18,5 +18,9 @@ class TimeStampModel(models.Model):
     )
 
     @property
-    def pretty_update_at(self):
+    def pretty_updated_at(self):
         return f"{self.updated_at}".split('.')[0]
+
+    @property
+    def pretty_created_at(self):
+        return f"{self.created_at}".split('.')[0]
